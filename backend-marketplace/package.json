@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "node src/app.js",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "build": "echo 'No build step required'",
+    "start": "node src/app.js"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
