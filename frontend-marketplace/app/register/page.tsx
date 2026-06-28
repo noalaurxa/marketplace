@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function RegisterPage() {
-  const { register } = useContext(AuthContext);
+  const { register, login } = useContext(AuthContext);
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,7 +25,8 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register({ name, email, password });
-      router.push('/login');
+      await login(email, password); // Auto-login after register
+      window.location.href = '/';
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Error al registrar. Inténtalo de nuevo.');
     } finally {
