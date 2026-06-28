@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      router.push('/');
+      window.location.href = '/';
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Credenciales incorrectas. Inténtalo de nuevo.');
     } finally {

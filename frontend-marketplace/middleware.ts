@@ -30,7 +30,12 @@ export async function middleware(request: NextRequest) {
   // Decode token payload (simple base64 decode — no secret needed in edge)
   let role: string | null = null;
   try {
-    let payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      throw new Error('Invalid token format');
+    }
+    
+    let payloadBase64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
     while (payloadBase64.length % 4) {
       payloadBase64 += '=';
     }
@@ -48,7 +53,9 @@ export async function middleware(request: NextRequest) {
   } catch {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = '/login';
-    return NextResponse.redirect(loginUrl);
+    const res = NextResponse.redirect(loginUrl);
+    res.cookies.delete('token');
+    return res;
   }
 
   // ADMIN-only routes
