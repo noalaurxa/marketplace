@@ -1,0 +1,5 @@
+{
+  "summary":  "Defines Express router for category endpoints with auth and role middleware.",
+  "updatedAt":  "2026-06-28T03:59:59.204762100Z",
+  "userFacing":  true
+}
