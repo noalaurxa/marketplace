@@ -30,7 +30,10 @@ export async function middleware(request: NextRequest) {
   // Decode token payload (simple base64 decode — no secret needed in edge)
   let role: string | null = null;
   try {
-    const payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    let payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (payloadBase64.length % 4) {
+      payloadBase64 += '=';
+    }
     const decoded = JSON.parse(atob(payloadBase64));
     role = decoded.role ?? null;
 
