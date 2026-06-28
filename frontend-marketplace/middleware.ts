@@ -30,10 +30,8 @@ export async function middleware(request: NextRequest) {
   // Decode token payload (simple base64 decode — no secret needed in edge)
   let role: string | null = null;
   try {
-    const payloadBase64 = token.split('.')[1];
-    const decoded = JSON.parse(
-      Buffer.from(payloadBase64, 'base64').toString('utf-8')
-    );
+    const payloadBase64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = JSON.parse(atob(payloadBase64));
     role = decoded.role ?? null;
 
     // Check token expiry
