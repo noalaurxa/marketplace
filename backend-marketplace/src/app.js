@@ -12,11 +12,17 @@ const app = express();
 
 // CORS – allow frontend on localhost or Vercel
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://marketplace-sand-five.vercel.app',
-    process.env.FRONTEND_URL || 'https://frontend-marketplace.vercel.app'
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (
+      origin.startsWith('http://localhost:3000') ||
+      origin.endsWith('.vercel.app') ||
+      origin === process.env.FRONTEND_URL
+    ) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
 }));
 
